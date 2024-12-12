@@ -109,7 +109,7 @@ State2 --> [*]
 
 ```
 
-#" タイミング図
+## タイミング図
 ```plantuml
 robust "ウェブブラウザ" as WB
 concise "ユーザ" as WU
