@@ -17,7 +17,7 @@ export const handleOpenFile = async (mainWindow: BrowserWindow): Promise<void> =
   const fileState = FileState.getInstance();
 
   // ファイルを選択
-  const filePath = await selectFile([{ name: "Documents", extensions: ["md"] }]);
+  const filePath = await selectFile([{ name: "Markdown File", extensions: ["md"] }]);
   if (!filePath) {
     console.log("No file selected.");
     return;
