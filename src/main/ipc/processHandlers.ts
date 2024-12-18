@@ -36,6 +36,7 @@ export const registerProcessHandlers = (): void => {
           log.error(error);
           log.error(stderr);
           if (fs.existsSync(tempSVGFilePath)) {
+            console.log("error -> unlinksync")
             fs.unlinkSync(tempPUFilePath);
             fs.unlinkSync(tempSVGFilePath);
           }
@@ -43,6 +44,7 @@ export const registerProcessHandlers = (): void => {
         } else {
           log.info(stdout);
           if (fs.existsSync(tempSVGFilePath)) {
+            console.log("svg -> unlinksync")
             const svg = fs.readFileSync(tempSVGFilePath, { encoding: "utf8" });
             fs.unlinkSync(tempPUFilePath);
             fs.unlinkSync(tempSVGFilePath);
