@@ -60,26 +60,33 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
+const cleanTemporaryDirectory = (): void => {
+  if (fs.existsSync(TEMP_DIR)) {
+    try {
+      fs.rmSync(TEMP_DIR, { recursive: true, force: true });
+      log.info("Temporary directory deleted.");
+    } catch (err) {
+      log.warn(`Failed to delete temp directory: ${err}`);
+    }
+  }
+};
 
-app.on('before-quit', async (event) => {
+const handleAppQuit = async (event: Electron.Event): Promise<void> => {
   if (isQuitting) return;
   isQuitting = true;
 
   event.preventDefault();
-
   try {
+    log.info("Waiting for all processes to terminate...");
     await processManager.terminateAll();
   } catch (error) {
+    log.error(`Error terminating processes: ${error}`);
   } finally {
-    if (fs.existsSync(TEMP_DIR)) {
-      try {
-        fs.rmSync(TEMP_DIR, { recursive: true, force: true });
-      } catch (err) {
-      }
-    }
+    cleanTemporaryDirectory();
     app.quit();
   }
-});
+}
+app.on('before-quit', handleAppQuit);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
