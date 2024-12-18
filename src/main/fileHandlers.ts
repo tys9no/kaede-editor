@@ -19,7 +19,6 @@ export const handleOpenFile = async (mainWindow: BrowserWindow): Promise<void> =
   // ファイルを選択
   const filePath = await selectFile([{ name: "Markdown File", extensions: ["md"] }]);
   if (!filePath) {
-    console.log("No file selected.");
     return;
   }
 
@@ -29,7 +28,6 @@ export const handleOpenFile = async (mainWindow: BrowserWindow): Promise<void> =
   // ファイルを読み込む
   const fileData = readFile(filePath);
   if (!fileData) {
-    console.error("Failed to read file.");
     return;
   }
 

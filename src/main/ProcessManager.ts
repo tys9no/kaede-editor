@@ -4,7 +4,7 @@ class ProcessManager {
   private static instance: ProcessManager;
   private processes: Set<ChildProcess> = new Set();
 
-  private constructor() { }
+  private constructor() {}
 
   // シングルトンパターン
   public static getInstance(): ProcessManager {
@@ -16,7 +16,6 @@ class ProcessManager {
 
   // プロセスを追加して監視
   public add(process: ChildProcess): void {
-
     this.processes.add(process);
 
     // プロセス終了時に自動で削除
@@ -28,12 +27,43 @@ class ProcessManager {
 
   // すべてのプロセスを停止
   public async terminateAll(): Promise<void> {
-    const terminationPromises = Array.from(this.processes).map(
-      (process) =>
-        new Promise<void>((resolve) => {
-          process.on("exit", () => resolve());
-          process.kill("SIGINT");
-        })
+    const terminationPromises = Array.from(this.processes).map((process) =>
+      new Promise<void>((resolve, reject) => {
+        let isExited = false;
+
+        // プロセス終了時の処理
+        process.on("exit", () => {
+          isExited = true;
+          console.log(`Process with PID ${process.pid} exited.`);
+          resolve();
+        });
+
+        // プロセスエラー時の処理
+        process.on("error", (err) => {
+          if (!isExited) {
+            console.error(`Error in process with PID ${process.pid}:`, err);
+            reject(err);
+          }
+        });
+
+        // 優先的にSIGTERMで停止を試みる
+        console.log(`Sending SIGTERM to process with PID ${process.pid}`);
+        process.kill("SIGTERM");
+
+        // タイムアウト処理（5秒経過後にSIGKILLで強制終了）
+        const timeout = setTimeout(() => {
+          if (!isExited) {
+            console.warn(
+              `Process with PID ${process.pid} did not exit in time. Sending SIGKILL.`
+            );
+            process.kill("SIGKILL"); // 強制終了
+            resolve();
+          }
+        }, 5000);
+
+        // プロセス終了時にタイムアウトをクリア
+        process.on("exit", () => clearTimeout(timeout));
+      })
     );
 
     await Promise.all(terminationPromises);
