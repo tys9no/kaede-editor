@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 
-import Ace from './Ace';
+import Editor from './Editor';
 import Preview from './Preview';
 
 
@@ -15,7 +15,7 @@ const App = () => {
       <Box>
         <Grid container spacing={1}>
           <Grid size={6} overflow='auto' height='100vh'>
-            <Ace setMarkdownValue={setMarkdownValue} />
+            <Editor setMarkdownValue={setMarkdownValue} />
           </Grid>
           <Grid size={6} overflow='auto' height='100vh'>
             <Preview markdownValue={markdownValue} />
