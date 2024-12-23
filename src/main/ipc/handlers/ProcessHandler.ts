@@ -7,7 +7,7 @@ import * as path from "path";
 import log from "electron-log";
 
 import { TEMP_DIR, PLANTUML_PATH } from '../../constants';
-import ProcessManager from "../../ProcessManager";
+import ProcessManager from "../../managers/ProcessManager";
 
 export class ProcessHandler {
   constructor(private processManager: ProcessManager) { }

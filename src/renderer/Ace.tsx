@@ -67,7 +67,6 @@ const MdEditor = (props: Props) => {
       removeListener();
     }
   }, [editorRef]);
-  ///
 
   const md = MarkdownIt({
     html: true,

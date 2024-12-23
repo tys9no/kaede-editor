@@ -1,15 +1,15 @@
-class FileState {
+class FileManager {
 
-  private static instance: FileState;
+  private static instance: FileManager;
   private currentFilePath: string | null = null;
 
   private constructor() { }
 
-  public static getInstance(): FileState {
-    if (!FileState.instance) {
-      FileState.instance = new FileState();
+  public static getInstance(): FileManager {
+    if (!FileManager.instance) {
+      FileManager.instance = new FileManager();
     }
-    return FileState.instance;
+    return FileManager.instance;
   }
 
   public getCurrentFilePath(): string | null {
@@ -26,4 +26,4 @@ class FileState {
 
 }
 
-export default FileState;
+export default FileManager;
