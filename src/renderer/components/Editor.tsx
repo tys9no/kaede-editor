@@ -24,10 +24,9 @@ const { electronAPI } = window;
 
 const cache = new Map<string, string>();
 
-const MdEditor = (props: Props) => {
+const Editor = (props: Props) => {
   console.log('MdEditor');
   const editorRef = useRef<AceEditor | null>(null);
-
 
   useEffect(() => {
     const removeListener = electronAPI.onNewFile(
@@ -207,4 +206,4 @@ const MdEditor = (props: Props) => {
   )
 }
 
-export default MdEditor;
+export default Editor;
