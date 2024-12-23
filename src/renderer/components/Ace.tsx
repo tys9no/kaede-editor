@@ -100,7 +100,12 @@ const MdEditor = (props: Props) => {
 
         // キャッシュが存在すれば利用する
         if (cache.has(content)) {
-          return '<pre class="plantuml">' + cache.get(content)! + '</pre>';
+          const value = cache.get(content);
+          if (value) {
+            return `<pre class="plantuml">${value}</pre>`;
+          } else {
+            return defaultRender(tokens, idx, options, env, self);
+          } 
         }
 
         // 非同期処理を解決するために同期的にプレースホルダを返す
@@ -108,7 +113,6 @@ const MdEditor = (props: Props) => {
 
         // 非同期で結果を取得しキャッシュに保存
         const guid = uuidv4();
-        // electronAPI.getSVG(content, guid).then((result: string) => {
 
         electronAPI.getSVG([content, guid]).then((result: string) => {
           console.log(result);
@@ -127,7 +131,7 @@ const MdEditor = (props: Props) => {
 
   mermaid.initialize({ startOnLoad: false });
 
-  const onInput = (_event: any) => {
+  const onInput = () => {
     console.log('onInput');
     mermaid.run({
       querySelector: '.mermaid',
