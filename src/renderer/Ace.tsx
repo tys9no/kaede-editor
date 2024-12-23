@@ -57,16 +57,17 @@ const MdEditor = (props: Props) => {
 
   useEffect(() => {
     const removeListener = electronAPI.onSave(
-      (isSaveAs: boolean) => {
+      () => {
         const content = editorRef.current?.editor.getValue()
-        electronAPI.sendEditorValue(content, isSaveAs);
+        console.log("test");
+        electronAPI.save(content);
       },
     );
     return () => {
       removeListener();
     }
   }, [editorRef]);
-
+  ///
 
   const md = MarkdownIt({
     html: true,

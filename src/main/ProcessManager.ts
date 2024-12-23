@@ -1,4 +1,4 @@
-import { ChildProcess, exec } from "child_process";
+import { ChildProcess} from "child_process";
 
 class ProcessManager {
   private static instance: ProcessManager;
@@ -27,7 +27,6 @@ class ProcessManager {
       new Promise<void>((resolve, reject) => {
         let isExited = false;
 
-        // プロセス終了時の処理
         process.on("exit", () => {
           isExited = true;
           console.log(`Process with PID ${process.pid} exited.`);

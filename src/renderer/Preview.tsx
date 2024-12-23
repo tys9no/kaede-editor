@@ -13,10 +13,9 @@ const { electronAPI } = window;
 const Preview = (props:Props) => {
 
   useEffect(() => {
-    const removeListener = electronAPI.onSaveHtml(
+    const removeListener = electronAPI.onExportAsHtml(
       () => {
-        console.log("saveHtmlContents");
-        electronAPI.sendHtml(props.markdownValue);
+        electronAPI.exportAsHtml(props.markdownValue);
       },
     );
     return () => {
