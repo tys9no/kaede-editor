@@ -4,11 +4,15 @@ import * as fs from "fs";
 
 import log from 'electron-log';
 
-import { IS_DEV, TEMP_DIR } from './constants';
+import { TEMP_DIR } from './constants/paths';
+import { DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH } from './constants/settings';
+import { IS_DEV } from './constants/env';
+
 import { buildAppMenu } from './menu';
 
 import FileManager from './managers/FileManager';
 const fileManager = FileManager.getInstance();
+
 import ProcessManager from './managers/ProcessManager';
 const processManager = ProcessManager.getInstance();
 
@@ -40,8 +44,8 @@ const createWindow = (): void => {
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 810,
-    width: 1440,
+    height: DEFAULT_WINDOW_HEIGHT,
+    width: DEFAULT_WINDOW_WIDTH,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },

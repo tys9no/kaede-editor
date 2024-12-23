@@ -6,7 +6,7 @@ import * as path from "path";
 
 import log from "electron-log";
 
-import { TEMP_DIR, PLANTUML_PATH } from '../../constants';
+import { TEMP_DIR, PLANTUML_PATH } from '../../constants/paths';
 import ProcessManager from "../../managers/ProcessManager";
 
 export class ProcessHandler {

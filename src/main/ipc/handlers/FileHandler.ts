@@ -8,7 +8,7 @@ import { ExportContext } from '../strategies/export/ExportContext';
 import { ExportHtmlStrategyImpl } from '../strategies/export/ExportHtmlStrategyImpl';
 
 import FileManager from "../../managers/FileManager";
-import { selectFile, readFile, saveFileDialog } from "../../fileUtils";
+import { FileUtils } from "../../Utils/FileUtils";
 
 export class FileHandler {
   constructor(private fileManager: FileManager) { }
@@ -17,7 +17,7 @@ export class FileHandler {
     ipcMain.on("save-file", async (_event, content) => {
       let filePath = this.fileManager.getCurrentFilePath();
       if (!filePath) {
-        filePath = await saveFileDialog([{ name: "Markdown File", extensions: ["md"] }]);
+        filePath = await FileUtils.saveFileDialog([{ name: "Markdown File", extensions: ["md"] }]);
         if (!filePath) {
           return;
         }
@@ -32,7 +32,7 @@ export class FileHandler {
     });
 
     ipcMain.on("export-as-html", async (_event, content) => {
-      const filePath = await saveFileDialog([{ name: "HTML File", extensions: ["html"] }]);
+      const filePath = await FileUtils.saveFileDialog([{ name: "HTML File", extensions: ["html"] }]);
       if (!filePath) {
         return;
       }
@@ -52,14 +52,14 @@ export class FileHandler {
   }
 
   async handleOpenFile(mainWindow: BrowserWindow): Promise<void> {
-    const filePath = await selectFile([{ name: "Markdown File", extensions: ["md"] }]);
+    const filePath = await FileUtils.openFileDialog([{ name: "Markdown File", extensions: ["md"] }]);
     if (!filePath) {
       return;
     }
 
     this.fileManager.setCurrentFilePath(filePath);
 
-    const fileData = readFile(filePath);
+    const fileData = FileUtils.readFile(filePath);
     if (!fileData) {
       return;
     }
