@@ -1,14 +1,14 @@
-import { BrowserWindow, Menu } from "electron";
+import { BrowserWindow, Menu } from 'electron';
 
-import { IS_MAC } from "./constants/env";
+import { IS_MAC } from './constants/env';
 
-import { FileHandler } from "./ipc/handlers/FileHandler";
+import { FileHandler } from './ipc/handlers/FileHandler';
 
 export const buildAppMenu = (mainWindow: BrowserWindow, fileHandler: FileHandler): Menu => {
 
   const template: Electron.MenuItemConstructorOptions[] = [
     {
-      label: "File",
+      label: 'File',
       submenu: [
         { label: 'New', click: async () => await fileHandler.handleNewFile(mainWindow) },
         { type: 'separator' },
@@ -23,7 +23,7 @@ export const buildAppMenu = (mainWindow: BrowserWindow, fileHandler: FileHandler
       ]
     },
     {
-      label: "Edit",
+      label: 'Edit',
       submenu: [
         { role: 'undo', label: 'Undo' },
         { role: 'redo', label: 'Redo' },

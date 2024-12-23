@@ -1,23 +1,23 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain } from 'electron';
 
-import { spawn } from "child_process";
+import { spawn } from 'child_process';
 
 import { SaveFileContext } from '../strategies/save/SaveFileContext';
 import { SaveFileStrategyImpl } from '../strategies/save/SaveFileStrategyImpl';
 import { ExportContext } from '../strategies/export/ExportContext';
 import { ExportHtmlStrategyImpl } from '../strategies/export/ExportHtmlStrategyImpl';
 
-import FileManager from "../../managers/FileManager";
-import { FileUtils } from "../../Utils/FileUtils";
+import FileManager from '../../managers/FileManager';
+import { FileUtils } from '../../Utils/FileUtils';
 
 export class FileHandler {
   constructor(private fileManager: FileManager) { }
 
   registerFileHandlers(): void {
-    ipcMain.on("save-file", async (_event, content) => {
+    ipcMain.on('save-file', async (_event, content) => {
       let filePath = this.fileManager.getCurrentFilePath();
       if (!filePath) {
-        filePath = await FileUtils.saveFileDialog([{ name: "Markdown File", extensions: ["md"] }]);
+        filePath = await FileUtils.saveFileDialog([{ name: 'Markdown File', extensions: ['md'] }]);
         if (!filePath) {
           return;
         }
@@ -31,8 +31,8 @@ export class FileHandler {
       }
     });
 
-    ipcMain.on("export-as-html", async (_event, content) => {
-      const filePath = await FileUtils.saveFileDialog([{ name: "HTML File", extensions: ["html"] }]);
+    ipcMain.on('export-as-html', async (_event, content) => {
+      const filePath = await FileUtils.saveFileDialog([{ name: 'HTML File', extensions: ['html'] }]);
       if (!filePath) {
         return;
       }
@@ -52,7 +52,7 @@ export class FileHandler {
   }
 
   async handleOpenFile(mainWindow: BrowserWindow): Promise<void> {
-    const filePath = await FileUtils.openFileDialog([{ name: "Markdown File", extensions: ["md"] }]);
+    const filePath = await FileUtils.openFileDialog([{ name: 'Markdown File', extensions: ['md'] }]);
     if (!filePath) {
       return;
     }
@@ -65,14 +65,14 @@ export class FileHandler {
     }
 
     // レンダラプロセスにデータを送信
-    mainWindow.webContents.send("open", fileData);
+    mainWindow.webContents.send('open', fileData);
   }
 
   async handleOpenNewWindow(): Promise<void> {
-    const exePath = app.getPath("exe");
+    const exePath = app.getPath('exe');
     const child = spawn(exePath, [], {
       detached: true,
-      stdio: "ignore",
+      stdio: 'ignore',
     });
 
     child.unref();

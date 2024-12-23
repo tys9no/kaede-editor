@@ -1,4 +1,4 @@
-import { ChildProcess} from "child_process";
+import { ChildProcess} from 'child_process';
 
 class ProcessManager {
   private static instance: ProcessManager;
@@ -16,9 +16,9 @@ class ProcessManager {
   public add(process: ChildProcess): void {
     this.processes.add(process);
 
-    process.on("exit", () => {
+    process.on('exit', () => {
       this.processes.delete(process);
-      console.log("Process exited and removed from manager.");
+      console.log('Process exited and removed from manager.');
     });
   }
 
@@ -27,13 +27,13 @@ class ProcessManager {
       new Promise<void>((resolve, reject) => {
         let isExited = false;
 
-        process.on("exit", () => {
+        process.on('exit', () => {
           isExited = true;
           console.log(`Process with PID ${process.pid} exited.`);
           resolve();
         });
 
-        process.on("error", (err) => {
+        process.on('error', (err) => {
           if (!isExited) {
             console.error(`Error in process with PID ${process.pid}:`, err);
             reject(err);
@@ -41,24 +41,24 @@ class ProcessManager {
         });
 
         console.log(`Sending SIGTERM to process with PID ${process.pid}`);
-        process.kill("SIGTERM");
+        process.kill('SIGTERM');
 
         const timeout = setTimeout(() => {
           if (!isExited) {
             console.warn(
               `Process with PID ${process.pid} did not exit in time. Sending SIGKILL.`
             );
-            process.kill("SIGKILL"); // 強制終了
+            process.kill('SIGKILL'); // 強制終了
             resolve();
           }
         }, 5000);
 
-        process.on("exit", () => clearTimeout(timeout));
+        process.on('exit', () => clearTimeout(timeout));
       })
     );
 
     await Promise.all(terminationPromises);
-    console.log("All processes have been terminated.");
+    console.log('All processes have been terminated.');
   }
 
   public getProcessCount(): number {

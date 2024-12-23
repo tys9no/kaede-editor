@@ -1,14 +1,14 @@
-import AceEditor, { IAceOptions, IEditorProps } from "react-ace";
-import "ace-builds/src-noconflict/mode-markdown";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/ext-language_tools";
-import "ace-builds/src-noconflict/ext-searchbox"; // 検索ボックスを利用
+import AceEditor, { IAceOptions, IEditorProps } from 'react-ace';
+import 'ace-builds/src-noconflict/mode-markdown';
+import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/ext-searchbox'; // 検索ボックスを利用
 
 import MarkdownIt from 'markdown-it'
-import type { PluginSimple } from "markdown-it";
+import type { PluginSimple } from 'markdown-it';
 
 import mermaid from 'mermaid';
-import { Ace } from "ace-builds";
+import { Ace } from 'ace-builds';
 
 import { useEffect, useRef } from 'react';
 
@@ -25,7 +25,7 @@ const { electronAPI } = window;
 const cache = new Map<string, string>();
 
 const MdEditor = (props: Props) => {
-  console.log("MdEditor");
+  console.log('MdEditor');
   const editorRef = useRef<AceEditor | null>(null);
 
 
@@ -34,7 +34,7 @@ const MdEditor = (props: Props) => {
       () => {
         cache.clear();
         const editor = editorRef.current?.editor;
-        editor?.setValue("", 1);
+        editor?.setValue('', 1);
       },
     );
     return () => {
@@ -59,7 +59,7 @@ const MdEditor = (props: Props) => {
     const removeListener = electronAPI.onSave(
       () => {
         const content = editorRef.current?.editor.getValue()
-        console.log("test");
+        console.log('test');
         electronAPI.save(content);
       },
     );
@@ -104,7 +104,7 @@ const MdEditor = (props: Props) => {
         }
 
         // 非同期処理を解決するために同期的にプレースホルダを返す
-        const placeholder = `<pre class="plantuml">Loading...</pre>`;
+        const placeholder = `<pre class='plantuml'>Loading...</pre>`;
 
         // 非同期で結果を取得しキャッシュに保存
         const guid = uuidv4();
@@ -112,7 +112,7 @@ const MdEditor = (props: Props) => {
 
         electronAPI.getSVG([content, guid]).then((result: string) => {
           console.log(result);
-          if (result !== "") {
+          if (result !== '') {
             cache.set(content, result);
           }
         });
@@ -128,7 +128,7 @@ const MdEditor = (props: Props) => {
   mermaid.initialize({ startOnLoad: false });
 
   const onInput = (_event: any) => {
-    console.log("onInput");
+    console.log('onInput');
     mermaid.run({
       querySelector: '.mermaid',
       suppressErrors: true
@@ -136,24 +136,24 @@ const MdEditor = (props: Props) => {
   }
 
   const onLoad = async (editor: Ace.Editor) => {
-    console.log("onLoad");
+    console.log('onLoad');
 
     // Ace Editorにカスタムコマンドを追加
     editor.commands.addCommand({
-      name: "showSearch",
-      bindKey: { win: "Ctrl-F", mac: "Command-F" },
+      name: 'showSearch',
+      bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
       exec: () => {
         // 検索ボックスを表示する組み込みコマンド
-        editor.execCommand("find");
+        editor.execCommand('find');
       },
     });
 
     editor.commands.addCommand({
-      name: "replaceText",
-      bindKey: { win: "Ctrl-H", mac: "Command-H" },
+      name: 'replaceText',
+      bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
       exec: () => {
         // 検索置換ボックスを表示する組み込みコマンド
-        editor.execCommand("replace");
+        editor.execCommand('replace');
       },
     });
 
@@ -166,7 +166,7 @@ const MdEditor = (props: Props) => {
   }
 
   const onChange = async (newValue: string) => {
-    console.log("onChange");
+    console.log('onChange');
     const result = md.render(newValue);
     props.setMarkdownValue(result);
   }
@@ -187,11 +187,11 @@ const MdEditor = (props: Props) => {
     <div>
       <AceEditor
         ref={editorRef}
-        name="editor"
-        theme="monokai"
-        mode="markdown"
-        height="100vh"
-        width="100%"
+        name='editor'
+        theme='monokai'
+        mode='markdown'
+        height='100vh'
+        width='100%'
         focus={true} // フォーカス
         onChange={onChange}
         onInput={onInput}
