@@ -7,22 +7,21 @@ import { SaveFileStrategyImpl } from '../strategies/save/SaveFileStrategyImpl';
 import { ExportContext } from '../strategies/export/ExportContext';
 import { ExportHtmlStrategyImpl } from '../strategies/export/ExportHtmlStrategyImpl';
 
-import FileState from "../../FileState";
+import FileManager from "../../managers/FileManager";
 import { selectFile, readFile, saveFileDialog } from "../../fileUtils";
 
 export class FileHandler {
-  constructor(private fileState: FileState) { }
+  constructor(private fileManager: FileManager) { }
 
   registerFileHandlers(): void {
     ipcMain.on("save-file", async (_event, content) => {
-      const fileState = FileState.getInstance();
-      let filePath = fileState.getCurrentFilePath();
+      let filePath = this.fileManager.getCurrentFilePath();
       if (!filePath) {
         filePath = await saveFileDialog([{ name: "Markdown File", extensions: ["md"] }]);
         if (!filePath) {
           return;
         }
-        fileState.setCurrentFilePath(filePath);
+        this.fileManager.setCurrentFilePath(filePath);
       }
       try {
         const context = new SaveFileContext(new SaveFileStrategyImpl(filePath));
@@ -48,7 +47,7 @@ export class FileHandler {
 
 
   async handleNewFile(mainWindow: BrowserWindow): Promise<void> {
-    this.fileState.clearCurrentFilePath();
+    this.fileManager.clearCurrentFilePath();
     mainWindow.webContents.send('new')
   }
 
@@ -58,7 +57,7 @@ export class FileHandler {
       return;
     }
 
-    this.fileState.setCurrentFilePath(filePath);
+    this.fileManager.setCurrentFilePath(filePath);
 
     const fileData = readFile(filePath);
     if (!fileData) {
@@ -84,9 +83,9 @@ export class FileHandler {
   }
 
   async handleSaveAsFile(mainWindow: BrowserWindow): Promise<void> {
-    console.log(this.fileState.getCurrentFilePath());
-    this.fileState.clearCurrentFilePath();
-    console.log(this.fileState.getCurrentFilePath());
+    console.log(this.fileManager.getCurrentFilePath());
+    this.fileManager.clearCurrentFilePath();
+    console.log(this.fileManager.getCurrentFilePath());
     mainWindow.webContents.send('save')
   }
 

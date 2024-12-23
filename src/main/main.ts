@@ -4,15 +4,13 @@ import * as fs from "fs";
 
 import log from 'electron-log';
 
+import { IS_DEV, TEMP_DIR } from './constants';
 import { buildAppMenu } from './menu';
 
-import ProcessManager from './ProcessManager';
+import FileManager from './managers/FileManager';
+const fileManager = FileManager.getInstance();
+import ProcessManager from './managers/ProcessManager';
 const processManager = ProcessManager.getInstance();
-
-import FileState from './FileState';
-const fileStete = FileState.getInstance();
-
-import { IS_DEV, TEMP_DIR } from './constants';
 
 import { FileHandler } from './ipc/handlers/FileHandler';
 import { ProcessHandler } from './ipc/handlers/ProcessHandler';
@@ -31,6 +29,14 @@ if (require('electron-squirrel-startup')) {
 }
 
 const createWindow = (): void => {
+  // Create the temp directroy.
+  if (!fs.existsSync(TEMP_DIR)) {
+    try {
+      fs.mkdirSync(TEMP_DIR, { recursive: true });
+    } catch (error) {
+      console.error(`Failed to create directory: ${error}`);
+    }
+  }
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -42,7 +48,7 @@ const createWindow = (): void => {
   });
 
   // Registaer IPC Handlers.
-  const fileHandler = new FileHandler(fileStete);
+  const fileHandler = new FileHandler(fileManager);
   fileHandler.registerFileHandlers();
   const processHandler = new ProcessHandler(processManager);
   processHandler.registerProcessHandlers();
