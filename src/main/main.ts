@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron';
 
-import * as fs from "fs";
+import * as fs from 'fs';
 
 import log from 'electron-log';
 
@@ -80,7 +80,7 @@ const cleanTemporaryDirectory = (): void => {
   if (fs.existsSync(TEMP_DIR)) {
     try {
       fs.rmSync(TEMP_DIR, { recursive: true, force: true });
-      log.info("Temporary directory deleted.");
+      log.info('Temporary directory deleted.');
     } catch (err) {
       log.warn(`Failed to delete temp directory: ${err}`);
     }
@@ -93,7 +93,7 @@ const handleAppQuit = async (event: Electron.Event): Promise<void> => {
 
   event.preventDefault();
   try {
-    log.info("Waiting for all processes to terminate...");
+    log.info('Waiting for all processes to terminate...');
     await processManager.terminateAll();
   } catch (error) {
     log.error(`Error terminating processes: ${error}`);

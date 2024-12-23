@@ -5,7 +5,7 @@ type Props = {
 }
 
 const style = {
-  height: "100vh"
+  height: '100vh'
 }
 
 const { electronAPI } = window;
