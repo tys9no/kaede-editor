@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import { dialog } from "electron";
 
-// ファイルを選択してパスを取得
 export const selectFile = async (
   filters: Electron.FileFilter[]
 ): Promise<string | null> => {
@@ -18,7 +17,21 @@ export const selectFile = async (
   return filePaths[0];
 };
 
-// ファイルを読み込む
+export const saveFileDialog = async (
+  filters: Electron.FileFilter[]
+): Promise<string | null> => {
+  const { canceled, filePath } = await dialog.showSaveDialog({
+    title: "ファイルを保存",
+    filters,
+  });
+
+  if (canceled || !filePath) {
+    return null;
+  }
+
+  return filePath;
+};
+
 export const readFile = (filePath: string): string | null => {
   try {
     return fs.readFileSync(filePath, { encoding: "utf8" });
