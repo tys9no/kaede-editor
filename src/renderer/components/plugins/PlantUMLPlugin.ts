@@ -31,7 +31,7 @@ export const PlantUMLPlugin = () => {
         }
 
         const guid = uuidv4();
-        const request = electronAPI.getSVG([content, guid]).then((result: string) => {
+        const request = electronAPI.requestAndCacheSVG([content, guid]).then((result: string) => {
           if (result !== '') {
             cache.set(content, result);
           }

@@ -13,7 +13,7 @@ export class ProcessHandler {
   constructor(private processManager: ProcessManager) { }
 
   registerProcessHandlers(): void {
-    ipcMain.handle('get-svg', (_event, values) => {
+    ipcMain.handle('request-and-cache-svg', (_event, values) => {
       log.info('Start generate SVG File.');
       const content = '@startuml\n' + values[0] + '@enduml\n';
 
