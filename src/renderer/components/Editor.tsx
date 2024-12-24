@@ -1,18 +1,17 @@
+import { useEffect, useRef } from 'react';
+
 import AceEditor, { IAceOptions, IEditorProps } from 'react-ace';
+import { Ace } from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-searchbox'; // 検索ボックスを利用
 
 import MarkdownIt from 'markdown-it'
-import type { PluginSimple } from 'markdown-it';
-
 import mermaid from 'mermaid';
-import { Ace } from 'ace-builds';
+import { MermaidPlugin } from "./plugins/MermaidPlugin";
+import { PlantUMLPlugin } from "./plugins/PlantUMLPlugin";
 
-import { useEffect, useRef } from 'react';
-
-import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   setMarkdownValue: (result: string) => void;
@@ -23,6 +22,7 @@ type Props = {
 const { electronAPI } = window;
 
 const cache = new Map<string, string>();
+
 
 const Editor = (props: Props) => {
   console.log('MdEditor');
@@ -73,60 +73,8 @@ const Editor = (props: Props) => {
     typographer: true,
     breaks: true
   })
-
-  const MermaidPlugin: PluginSimple = (md) => {
-    const defaultRender = md.renderer.rules.fence || function (tokens, idx, options, env, self) {
-      return self.renderToken(tokens, idx, options)
-    }
-    md.renderer.rules.fence = function (tokens, idx, options, env, self) {
-      if (tokens[idx].info == 'mermaid') {
-        return '<pre class="mermaid">' + tokens[idx].content + '</pre>';
-      }
-      else {
-        return defaultRender(tokens, idx, options, env, self);
-      }
-    };
-  }
-  md.use(MermaidPlugin)
-
-  const PlantUMLPlugin: PluginSimple = (md) => {
-    const defaultRender = md.renderer.rules.fence || function (tokens, idx, options, env, self) {
-      return self.renderToken(tokens, idx, options);
-    };
-    md.renderer.rules.fence = function (tokens, idx, options, env, self) {
-      if (tokens[idx].info == 'plantuml') {
-        const content = tokens[idx].content;
-
-        // キャッシュが存在すれば利用する
-        if (cache.has(content)) {
-          const value = cache.get(content);
-          if (value) {
-            return `<pre class="plantuml">${value}</pre>`;
-          } else {
-            return defaultRender(tokens, idx, options, env, self);
-          } 
-        }
-
-        // 非同期処理を解決するために同期的にプレースホルダを返す
-        const placeholder = `<pre class='plantuml'>Loading...</pre>`;
-
-        // 非同期で結果を取得しキャッシュに保存
-        const guid = uuidv4();
-
-        electronAPI.getSVG([content, guid]).then((result: string) => {
-          console.log(result);
-          if (result !== '') {
-            cache.set(content, result);
-          }
-        });
-
-        return placeholder;
-      } else {
-        return defaultRender(tokens, idx, options, env, self);
-      }
-    };
-  };
-  md.use(PlantUMLPlugin)
+  md.use(MermaidPlugin(mermaid));
+  md.use(PlantUMLPlugin())
 
   mermaid.initialize({ startOnLoad: false });
 
