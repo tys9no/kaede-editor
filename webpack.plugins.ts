@@ -11,6 +11,7 @@ export const plugins = [
     patterns: [
       { from: './templates', to: './templates' },
       { from: './resources', to: './resources' },
+      { from: './assets', to: './assets' },
     ]
   }),
 ];

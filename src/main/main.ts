@@ -1,11 +1,12 @@
 import { app, BrowserWindow, Menu } from 'electron';
 
 import * as fs from 'fs';
+import path from 'path';
 
 import log from 'electron-log';
 
 import { TEMP_DIR } from './constants/paths';
-import { DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH } from './constants/settings';
+import { DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH, APP_TITLE } from './constants/settings';
 import { IS_DEV } from './constants/env';
 
 import { buildAppMenu } from './menu';
@@ -37,9 +38,15 @@ const createWindow = (): void => {
     }
   }
 
+  const iconPath = IS_DEV
+  ? path.join(__dirname, 'assets/icon.png')
+  : path.join(process.resourcesPath, 'assets/icon.png');
+
   const mainWindow = new BrowserWindow({
     height: DEFAULT_WINDOW_HEIGHT,
     width: DEFAULT_WINDOW_WIDTH,
+    title: APP_TITLE,
+    icon: iconPath,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
