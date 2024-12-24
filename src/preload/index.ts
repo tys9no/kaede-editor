@@ -17,7 +17,7 @@ contextBridge.exposeInMainWorld(
     onNewFile: createChannelHandler<void>('new'),
     onOpenFile: createChannelHandler<string>('open'),
 
-    getSVG: (value: string) => ipcRenderer.invoke('get-svg', value),
+    requestAndCacheSVG: (value: string) => ipcRenderer.invoke('request-and-cache-svg', value),
 
     onSave: createChannelHandler<void>('save'),
     save: (content: string) => ipcRenderer.send('save-file', content),
