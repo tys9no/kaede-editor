@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import AceEditor from 'react-ace';
 
 const { electronAPI } = window;
 
-export const useElectronListeners = (editorRef: React.MutableRefObject<any>) => {
+export const useElectronListeners = (editorRef: React.MutableRefObject<AceEditor | null>) => {
   useEffect(() => {
     const eventHandlers = [
       {
