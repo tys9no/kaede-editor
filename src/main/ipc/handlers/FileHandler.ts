@@ -2,13 +2,15 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 
 import { spawn } from 'child_process';
 
+import logger from '../../utils/Logger';
+
 import { SaveFileContext } from '../strategies/save/SaveFileContext';
 import { SaveFileStrategyImpl } from '../strategies/save/SaveFileStrategyImpl';
 import { ExportContext } from '../strategies/export/ExportContext';
 import { ExportHtmlStrategyImpl } from '../strategies/export/ExportHtmlStrategyImpl';
 
 import FileManager from '../../managers/FileManager';
-import { FileUtils } from '../../Utils/FileUtils';
+import { FileUtils } from '../../utils/FileUtils';
 
 export class FileHandler {
   constructor(private fileManager: FileManager) { }
@@ -28,7 +30,7 @@ export class FileHandler {
         const context = new SaveFileContext(new SaveFileStrategyImpl(filePath));
         await context.save(content);
       } catch (error) {
-        console.log(error);
+        logger.error(error);
       }
     });
 
@@ -41,7 +43,7 @@ export class FileHandler {
         const context = new ExportContext(new ExportHtmlStrategyImpl(filePath));
         await context.export(content);
       } catch (error) {
-        console.log(error);
+        logger.error(error);
       }
     });
   }
