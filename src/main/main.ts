@@ -58,7 +58,6 @@ const createWindow = (): void => {
   if (IS_DEV) {
     mainWindow.webContents.openDevTools();
   }
-
 };
 
 app.on('ready', createWindow);

@@ -1,29 +1,16 @@
-import { useEffect } from 'react';
+import { usePreviewListeners } from './hooks/usePreviewListeners';
 
 type Props = {
-  markdownValue: string;
+  renderedHtml: string;
 }
 
-const { electronAPI } = window;
-
-const Preview = ({ markdownValue }:Props) => {
-
-  useEffect(() => {
-    const handler = () => {
-      electronAPI.exportAsHtml(markdownValue);
-    };
-    const removeListener = electronAPI.onExportAsHtml(handler);
-
-    return () => {
-      removeListener();
-    };
-  }, [markdownValue]);
-
+const Preview = (props: Props) => {
+  usePreviewListeners(props.renderedHtml);
 
   return (
     <div
       style={{ height: '100vh' }}
-      dangerouslySetInnerHTML={{ __html: markdownValue }}
+      dangerouslySetInnerHTML={{ __html: props.renderedHtml }}
     ></div>
   );
 }

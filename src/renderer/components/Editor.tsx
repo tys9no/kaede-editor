@@ -10,16 +10,16 @@ import { MermaidPlugin } from "./plugins/MermaidPlugin";
 import { PlantUMLPlugin } from "./plugins/PlantUMLPlugin";
 
 import { useAceEditorHandlers } from './hooks/useAceEditorHandlers';
-import { useElectronListeners } from './hooks/useElectronListeners';
+import { useEditorListeners } from './hooks/useEditorListeners';
 
 
 type Props = {
-  setMarkdownValue: (result: string) => void;
+  setRenderedHtml: (result: string) => void;
 };
 
 const Editor = (props: Props) => {
   const editorRef = useRef<AceEditor | null>(null);
-  useElectronListeners(editorRef);
+  useEditorListeners(editorRef);
 
   const md = MarkdownIt({
     html: true,
@@ -30,7 +30,7 @@ const Editor = (props: Props) => {
   md.use(MermaidPlugin(mermaid));
   md.use(PlantUMLPlugin())
 
-  const { onLoad, onChange, onInput } = useAceEditorHandlers(md, props.setMarkdownValue)
+  const { onLoad, onChange, onInput } = useAceEditorHandlers(md, props.setRenderedHtml)
 
   return (
     <div>

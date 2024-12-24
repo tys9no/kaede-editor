@@ -6,7 +6,7 @@ import mermaid from 'mermaid';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-searchbox';
 
-export const useAceEditorHandlers = (md: MarkdownIt, setMarkdownValue: (result: string) => void) => {
+export const useAceEditorHandlers = (md: MarkdownIt, setRenderedHtml: (result: string) => void) => {
   const onLoad = async (editor: Ace.Editor) => {
     editor.commands.addCommand({
       name: 'showSearch',
@@ -27,7 +27,7 @@ export const useAceEditorHandlers = (md: MarkdownIt, setMarkdownValue: (result: 
 
   const onChange = async (newValue: string) => {
     const result = md.render(newValue);
-    setMarkdownValue(result);
+    setRenderedHtml(result);
   }
 
   const onInput = () => {
