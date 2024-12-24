@@ -1,6 +1,6 @@
 import { BrowserWindow, Menu } from 'electron';
 
-import { IS_MAC } from './constants/env';
+import { IS_MAC, IS_DEV } from './constants/env';
 
 import { FileHandler } from './ipc/handlers/FileHandler';
 
@@ -32,8 +32,11 @@ export const buildAppMenu = (mainWindow: BrowserWindow, fileHandler: FileHandler
         { role: 'copy', label: 'Copy' },
         { role: 'paste', label: 'Paste' },
       ]
-    },
-    {
+    }
+  ]
+
+  if (IS_DEV) {
+    template.push({
       label: 'Developer',
       submenu: [
         { role: 'reload' },
@@ -46,7 +49,8 @@ export const buildAppMenu = (mainWindow: BrowserWindow, fileHandler: FileHandler
         { type: 'separator' },
         { role: 'togglefullscreen' }
       ]
-    }
-  ]
+    });
+  }
+
   return Menu.buildFromTemplate(template);
 }
