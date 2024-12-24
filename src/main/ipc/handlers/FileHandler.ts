@@ -19,6 +19,7 @@ export class FileHandler {
       if (!filePath) {
         filePath = await FileUtils.saveFileDialog([{ name: 'Markdown File', extensions: ['md'] }]);
         if (!filePath) {
+          this.fileManager.restorePreviousFilePath();
           return;
         }
         this.fileManager.setCurrentFilePath(filePath);
@@ -83,9 +84,7 @@ export class FileHandler {
   }
 
   async handleSaveAsFile(mainWindow: BrowserWindow): Promise<void> {
-    console.log(this.fileManager.getCurrentFilePath());
     this.fileManager.clearCurrentFilePath();
-    console.log(this.fileManager.getCurrentFilePath());
     mainWindow.webContents.send('save')
   }
 
