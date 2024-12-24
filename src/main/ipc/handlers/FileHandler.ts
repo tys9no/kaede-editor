@@ -65,7 +65,6 @@ export class FileHandler {
       return;
     }
 
-    // レンダラプロセスにデータを送信
     mainWindow.webContents.send('open', fileData);
   }
 
@@ -91,5 +90,4 @@ export class FileHandler {
   async handleSaveAsHtml(mainWindow: BrowserWindow): Promise<void> {
     mainWindow.webContents.send('export-as-html')
   }
-
 }
