@@ -5,36 +5,26 @@ const { electronAPI } = window;
 
 export const useElectronListeners = (editorRef: React.MutableRefObject<AceEditor | null>) => {
   useEffect(() => {
-    const eventHandlers = [
-      {
-        event: "onNewFile",
-        handler: () => {
-          const editor = editorRef.current?.editor;
-          editor?.setValue("", 1);
-        },
-      },
-      {
-        event: "onOpenFile",
-        handler: (content: string) => {
-          const editor = editorRef.current?.editor;
-          editor?.setValue(content, -1);
-        },
-      },
-      {
-        event: "onSave",
-        handler: () => {
-          const content = editorRef.current?.editor.getValue();
-          electronAPI.save(content);
-        },
-      },
-    ];
+    const unsubscribeNewFile = electronAPI.onNewFile(() => {
+      const editor = editorRef.current?.editor;
+      editor?.setValue("", 1);
+    });
 
-    const unsubscribeFunctions = eventHandlers.map(({ event, handler }) =>
-      (electronAPI as any)[event](handler)
-    );
+    const unsubscribeOpenFile = electronAPI.onOpenFile((content: string) => {
+      const editor = editorRef.current?.editor;
+      editor?.setValue(content, -1);
+    });
 
+    const unsubscribeSave = electronAPI.onSave(() => {
+      const content = editorRef.current?.editor.getValue();
+      electronAPI.save(content);
+    });
+
+    // クリーンアップ関数
     return () => {
-      unsubscribeFunctions.forEach((unsubscribe) => unsubscribe());
+      unsubscribeNewFile();
+      unsubscribeOpenFile();
+      unsubscribeSave();
     };
   }, [editorRef]);
 };
