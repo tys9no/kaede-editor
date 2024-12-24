@@ -8,17 +8,17 @@ import Preview from './Preview';
 
 
 const App = () => {
-  const [markdownValue, setMarkdownValue] = useState<string>('');
+  const [renderedHtml, setRenderedHtml] = useState<string>('');
 
   return (
     <div>
       <Box>
         <Grid container spacing={1}>
           <Grid size={6} overflow='auto' height='100vh'>
-            <Editor setMarkdownValue={setMarkdownValue} />
+            <Editor setRenderedHtml={setRenderedHtml} />
           </Grid>
           <Grid size={6} overflow='auto' height='100vh'>
-            <Preview markdownValue={markdownValue} />
+            <Preview renderedHtml={renderedHtml} />
           </Grid>
         </Grid>
       </Box>

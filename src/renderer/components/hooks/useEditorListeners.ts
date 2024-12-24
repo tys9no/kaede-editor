@@ -3,7 +3,7 @@ import AceEditor from 'react-ace';
 
 const { electronAPI } = window;
 
-export const useElectronListeners = (editorRef: React.MutableRefObject<AceEditor | null>) => {
+export const useEditorListeners = (editorRef: React.MutableRefObject<AceEditor | null>) => {
   useEffect(() => {
     const unsubscribeNewFile = electronAPI.onNewFile(() => {
       const editor = editorRef.current?.editor;
