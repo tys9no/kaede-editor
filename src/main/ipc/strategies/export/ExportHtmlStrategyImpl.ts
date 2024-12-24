@@ -3,6 +3,8 @@ import * as fs from 'fs';
 import path from 'path';
 import ejs from 'ejs';
 
+import logger from '../../../utils/Logger';
+
 export class ExportHtmlStrategyImpl implements ExportStrategy {
   constructor(private outputFilePath: string) {}
 
@@ -23,7 +25,7 @@ export class ExportHtmlStrategyImpl implements ExportStrategy {
       });
       await fs.promises.writeFile(this.outputFilePath, exportedHtmlContent, 'utf-8');
     } catch (error) {
-      console.error('Error generating HTML:', error);
+      logger.error(error);
     }
   }
 }

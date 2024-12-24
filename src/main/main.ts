@@ -3,7 +3,7 @@ import { app, BrowserWindow, Menu } from 'electron';
 import * as fs from 'fs';
 import path from 'path';
 
-import log from 'electron-log';
+import logger from './utils/Logger';
 
 import { TEMP_DIR } from './constants/paths';
 import { DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH, APP_TITLE } from './constants/settings';
@@ -34,7 +34,7 @@ const createWindow = (): void => {
     try {
       fs.mkdirSync(TEMP_DIR, { recursive: true });
     } catch (error) {
-      console.error(`Failed to create directory: ${error}`);
+      logger.error(`Failed to create directory: ${error}`);
     }
   }
 
@@ -73,9 +73,9 @@ const cleanTemporaryDirectory = (): void => {
   if (fs.existsSync(TEMP_DIR)) {
     try {
       fs.rmSync(TEMP_DIR, { recursive: true, force: true });
-      log.info('Temporary directory deleted.');
+      logger.info('Temporary directory deleted.');
     } catch (err) {
-      log.warn(`Failed to delete temp directory: ${err}`);
+      logger.warn(`Failed to delete temp directory: ${err}`);
     }
   }
 };
@@ -86,10 +86,10 @@ const handleAppQuit = async (event: Electron.Event): Promise<void> => {
 
   event.preventDefault();
   try {
-    log.info('Waiting for all processes to terminate...');
+    logger.info('Waiting for all processes to terminate...');
     await processManager.terminateAll();
   } catch (error) {
-    log.error(`Error terminating processes: ${error}`);
+    logger.error(`Error terminating processes: ${error}`);
   } finally {
     cleanTemporaryDirectory();
     app.quit();

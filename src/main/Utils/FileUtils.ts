@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { dialog } from 'electron';
+import logger from '../utils/Logger';
 
 export class FileUtils {
   static async openFileDialog(filters: Electron.FileFilter[]): Promise<string | null> {
@@ -25,7 +26,7 @@ export class FileUtils {
     try {
       return fs.readFileSync(filePath, { encoding: 'utf8' });
     } catch (error) {
-      console.error(`Error reading file at ${filePath}:`, error);
+      logger.error(error);
       return null;
     }
   }
@@ -35,7 +36,7 @@ export class FileUtils {
       await fs.promises.writeFile(filePath, content, 'utf8');
       return true;
     } catch (error) {
-      console.error(`Error writing file at ${filePath}:`, error);
+      logger.error(error);
       return false;
     }
   }
