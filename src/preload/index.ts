@@ -1,5 +1,3 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, IpcRendererEvent, ipcRenderer } from 'electron'
 
 type Listener<T = void> = (data: T) => void;
@@ -22,9 +20,9 @@ contextBridge.exposeInMainWorld(
     getSVG: (value: string) => ipcRenderer.invoke('get-svg', value),
 
     onSave: createChannelHandler<void>('save'),
-    save:(content: string) => ipcRenderer.send('save-file',content),
+    save: (content: string) => ipcRenderer.send('save-file', content),
 
     onExportAsHtml: createChannelHandler<void>('export-as-html'),
-    exportAsHtml:(content: string) => ipcRenderer.send('export-as-html', content)
+    exportAsHtml: (content: string) => ipcRenderer.send('export-as-html', content)
   }
 );

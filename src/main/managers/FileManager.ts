@@ -3,7 +3,7 @@ class FileManager {
   private currentFilePath: string | null = null;
   private previousFilePath: string | null = null;
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): FileManager {
     if (!FileManager.instance) {
@@ -17,12 +17,12 @@ class FileManager {
   }
 
   public setCurrentFilePath(filePath: string | null): void {
-    this.backupCurrentFilePath(); // 直前のファイルパスを保存
+    this.backupCurrentFilePath();
     this.currentFilePath = filePath;
   }
 
   public clearCurrentFilePath(): void {
-    this.backupCurrentFilePath(); // クリア前の状態を保存
+    this.backupCurrentFilePath();
     this.currentFilePath = null;
   }
 

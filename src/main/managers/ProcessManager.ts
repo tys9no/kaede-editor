@@ -1,10 +1,10 @@
-import { ChildProcess} from 'child_process';
+import { ChildProcess } from 'child_process';
 
 class ProcessManager {
   private static instance: ProcessManager;
   private processes: Set<ChildProcess> = new Set();
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): ProcessManager {
     if (!ProcessManager.instance) {
@@ -48,7 +48,7 @@ class ProcessManager {
             console.warn(
               `Process with PID ${process.pid} did not exit in time. Sending SIGKILL.`
             );
-            process.kill('SIGKILL'); // 強制終了
+            process.kill('SIGKILL');
             resolve();
           }
         }, 5000);

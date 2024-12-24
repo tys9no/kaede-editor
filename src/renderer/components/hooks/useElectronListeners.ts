@@ -20,7 +20,6 @@ export const useElectronListeners = (editorRef: React.MutableRefObject<AceEditor
       electronAPI.save(content);
     });
 
-    // クリーンアップ関数
     return () => {
       unsubscribeNewFile();
       unsubscribeOpenFile();

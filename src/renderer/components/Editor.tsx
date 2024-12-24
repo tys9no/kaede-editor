@@ -41,7 +41,7 @@ const Editor = (props: Props) => {
         mode='markdown'
         height='100vh'
         width='100%'
-        focus={true} // フォーカス
+        focus={true}
         onChange={onChange}
         onInput={onInput}
         onLoad={onLoad}
