@@ -1,11 +1,8 @@
 import { BrowserWindow, Menu } from 'electron';
-
 import { IS_MAC, IS_DEV } from './constants/env';
-
 import { FileHandler } from './ipc/handlers/FileHandler';
 
 export const buildAppMenu = (mainWindow: BrowserWindow, fileHandler: FileHandler): Menu => {
-
   const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: 'File',
