@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import logger from '../../src/main/utils/Logger';
@@ -93,10 +94,6 @@ describe('WindowManager', () => {
       const options: Electron.BrowserWindowConstructorOptions = windowManager['getWindowOptions']();
       expect(options.icon).toBe(path.join(process.resourcesPath, 'assets/icon.png'));
     });    
-  });
-
-  describe('registerHandlers', () => {
-    //
   });
 
   describe('getMainWindow', () => {
