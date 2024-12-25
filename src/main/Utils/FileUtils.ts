@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { dialog } from 'electron';
 import logger from '../utils/Logger';
+import { TEMP_DIR } from '../constants/paths';
 
 export class FileUtils {
   static async openFileDialog(filters: Electron.FileFilter[]): Promise<string | null> {
@@ -40,4 +41,15 @@ export class FileUtils {
       return false;
     }
   }
+
+  static cleanTemporaryDirectory = (): void => {
+    if (fs.existsSync(TEMP_DIR)) {
+      try {
+        fs.rmSync(TEMP_DIR, { recursive: true, force: true });
+        logger.info('Temporary directory deleted.');
+      } catch (err) {
+        logger.warn(`Failed to delete temp directory: ${err}`);
+      }
+    }
+  };
 }

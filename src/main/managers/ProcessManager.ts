@@ -1,5 +1,4 @@
 import { ChildProcess } from 'child_process';
-
 import logger from '../utils/Logger';
 
 class ProcessManager {
