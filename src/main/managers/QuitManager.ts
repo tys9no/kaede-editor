@@ -7,8 +7,8 @@ export class QuitManager {
   private isQuitting = false;
   private processManager = ProcessManager.getInstance();
 
-  public async handleAppQuit(event: Electron.Event): Promise<void> {
-    if (this.isQuitting) return;
+  public async handleAppQuit(event: Electron.Event): Promise<boolean> {
+    if (this.isQuitting) return false;
     this.isQuitting = true;
 
     event.preventDefault();
@@ -23,5 +23,7 @@ export class QuitManager {
       FileUtils.cleanTemporaryDirectory();
       app.quit();
     }
+
+    return true;
   }
 }
