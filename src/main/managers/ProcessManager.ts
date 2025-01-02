@@ -30,8 +30,8 @@ class ProcessManager {
 
         process.on('exit', () => {
           isExited = true;
+          this.processes.delete(process);
           logger.info(`Process with PID ${process.pid} exited.`);
-          
           resolve();
         });
 

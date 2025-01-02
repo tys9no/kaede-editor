@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BrowserWindow } from 'electron';
 import * as fs from 'fs';
-import logger from '../../src/main/utils/Logger';
-import { WindowManager } from '../../src/main/managers/WindowManager';
-import { TEMP_DIR } from '../../src/main/constants/paths';
-import { DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH, APP_TITLE } from '../../src/main/constants/settings';
+import logger from '../../../src/main/utils/Logger';
+import { WindowManager } from '../../../src/main/managers/WindowManager';
+import { TEMP_DIR } from '../../../src/main/constants/paths';
+import { DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH, APP_TITLE } from '../../../src/main/constants/settings';
 import path from 'path';
 
 jest.mock('fs');
-jest.mock('../../src/main/utils/Logger');
+jest.mock('../../../src/main/utils/Logger');
 
 describe('WindowManager', () => {
   let windowManager: WindowManager;
@@ -22,9 +22,7 @@ describe('WindowManager', () => {
   describe('setupTempDir', () => {
     it('should create TEMP_DIR if it does not exist', () => {
       (fs.existsSync as jest.Mock).mockReturnValue(false);
-      (fs.mkdirSync as jest.Mock).mockImplementation(() => {
-        // 
-      });
+      (fs.mkdirSync as jest.Mock).mockImplementation();
 
       windowManager['setupTempDir']();
 
